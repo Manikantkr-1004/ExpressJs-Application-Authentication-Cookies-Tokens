@@ -145,8 +145,21 @@ const UserLogout = async(req, res) => {
             })
         }
 
-        res.clearCookie("newauth", {path:"/"});
-        res.clearCookie("refreshauth", {path:"/"});
+        res.cookie('newauth',token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "none",
+                path:"/",
+                maxAge: 0,
+            })
+
+            res.cookie('refreshauth',token2, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "none",
+                path:"/",
+                maxAge: 0,
+            })
 
         res.status(200).send({message:"Logged out successfully", data: null});
     } catch (error) {
